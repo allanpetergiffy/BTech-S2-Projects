@@ -1,0 +1,177 @@
+import re
+import os
+import subprocess
+import tkinter as tk
+from tkinter import messagebox, filedialog
+
+
+def split_questions(text):
+    parts = re.split(r'\n\s*(\d+)\.\s*', text)
+    questions = []
+    for i in range(1, len(parts), 2):
+        num = parts[i].strip()
+        qtext = parts[i + 1].strip()
+        questions.append((num, qtext))
+    return questions
+
+
+def create_files(questions, folder, open_files):
+    if not os.path.exists(folder):
+        os.makedirs(folder)
+
+    for num, qtext in questions:
+        filename = os.path.join(folder, f"question_{num}.c")
+        with open(filename, "w") as f:
+            f.write(qtext)
+
+        if open_files:
+            subprocess.Popen(["gedit", filename])
+
+
+def process_text():
+    text = text_box.get("1.0", tk.END).strip()
+    if not text:
+        messagebox.showwarning("Warning", "Please paste your questions in the box!")
+        return
+
+    folder = filedialog.askdirectory(title="Select Folder to Save Files")
+    if not folder:
+        return
+
+    open_files = open_var.get()
+    questions = split_questions(text)
+    create_files(questions, folder, open_files)
+
+    messagebox.showinfo("Success", f"{len(questions)} files created in {folder}")
+
+
+root = tk.Tk()
+root.title("C Question Splitter (No Install)")
+root.geometry("800x600")
+
+label = tk.Label(root, text="Paste your C questions below (Numbered 1., 2., 3., ...):")
+label.pack(pady=10)
+
+text_box = tk.Text(root, wrap=tk.WORD)
+text_box.pack(expand=True, fill=tk.BOTH, padx=10, pady=10)
+
+open_var = tk.BooleanVar()
+open_check = tk.Checkbutton(root, text="Open files in gedit after saving", variable=open_var)
+open_check.pack()
+
+button = tk.Button(root, text="Split into Files", command=process_text)
+button.pack(pady=10)
+
+root.mainloop()
+
+python3 c_question_splitter.py
+
+
+    1. Write a C program to print “hello world”.
+#include <stdio.h>
+int main() {
+ printf("Hello World!");
+ return 0;
+}
+    2. Program to show the use of \n character.
+Example 1
+#include <stdio.h>
+int main() {
+ printf("Hello World!\n");
+ printf("I am learning C.");
+ return 0;
+}
+Example 2
+#include <stdio.h>
+int main() {
+ printf("Hello World!\nI am learning C.\nAnd it is awesome!");
+ return 0;
+}
+    3. Program to show the use of comments in c.
+Comments in C : Comments can be singled-lined or multi-lined.
+Single-line Comments
+#include <stdio.h>
+int main() {
+ // This is a comment
+ printf("Hello World!");
+ return 0;
+}
+C Multi-line Comments
+#include <stdio.h>
+int main() {
+ /* The code below will print the words Hello World!
+ to the screen, and it is amazing */
+ printf("Hello World!");
+ return 0;
+}
+    4. Usage of variables and format specifiers.
+#include <stdio.h>
+int main() {
+ // Create variables
+ int myNum = 15; // Integer (whole number)
+ float myFloatNum = 5.99; // Floating point number
+ char myLetter = 'D'; // Character
+  // Print variables
+ printf("%d\n", myNum);
+ printf("%f\n", myFloatNum);
+ printf("%c\n", myLetter);
+ return 0;
+}
+    5. To print different types in a single printf() function.
+#include <stdio.h>
+int main() {
+ int myNum = 15;
+ char myLetter = 'D';
+ printf("My number is %d and my letter is %c", myNum, myLetter);
+ return 0;
+}
+
+    6. Change variable value.
+#include <stdio.h>
+int main() {
+ int myNum = 15; // myNum is 15
+ myNum = 10; // Now myNum is 10
+ printf("%d", myNum);
+ return 0;
+}
+    7. Add two variables.
+#include <stdio.h>
+int main() {
+ int x = 5;
+ int y = 6;
+ int sum = x + y;
+ printf("%d", sum);
+ return 0;
+}
+    8. Multiple variable declaration.
+#include <stdio.h>
+int main() {
+ int x = 5, y = 6, z = 50;
+ printf("%d", x + y + z);
+ return 0;
+}
+    9. Assign the same value to multiple variables of the same type.
+#include <stdio.h>
+int main() {
+ int x, y, z;
+ x = y = z = 50;
+ printf("%d", x + y + z);
+ return 0;
+}
+
+    10. Calculate area of a rectangle.
+#include <stdio.h>
+int main() {
+ // Create integer variables
+ int length = 4;
+ int width = 6;
+ int area;
+ // Calculate the area of a rectangle
+ area = length * width;
+ // Print the variables
+ printf("Length is: %d\n", length);
+ printf("Width is: %d\n", width);
+ printf("Area of the rectangle is: %d", area);
+ return 0;
+}
+
